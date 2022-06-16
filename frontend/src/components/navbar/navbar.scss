@@ -1,0 +1,28 @@
+@import '../../style/imports';
+
+
+.navbar{
+  height: 50px;
+  background: $color-blue;
+  @include flexBox(row);
+
+  .navContainer{
+    width: 100%;
+    max-width: 1024px;
+    color: #fff;
+    @include flexBox(row);
+    justify-content: space-between;
+
+    .logo{
+      font-weight: 500;
+    }
+
+    .navButton{
+      margin-left: 20px;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      color: $color-blue;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+@mixin flexBox($flex-direction){
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: $flex-direction;
+}
+
+@mixin content{
+  width: 100%;
+  max-width: 1024px;
+}

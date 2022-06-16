@@ -1,0 +1,14 @@
+@import '../../style/imports';
+
+
+.homeContainer{
+  margin-top: 50px;
+  @include flexBox(column);
+  gap: 30px;
+
+  .homeTitle{
+    width: 1024px;
+    font-size: 20px;
+  }
+
+}

@@ -1,0 +1,26 @@
+@import '../../style/imports';
+
+.footer{
+  @include content;
+
+  .fLists{
+    @include flexBox(row);
+    justify-content: space-between;
+    margin-bottom: 50px;
+
+    .fList{
+      list-style: none;
+
+      .fListItem{
+        margin-bottom: 10px;
+        color: $color-blue;
+        cursor: pointer;
+      }
+    }
+
+  }
+  .fText{
+    color: gray;
+    margin-bottom: 20px;
+  }
+}
