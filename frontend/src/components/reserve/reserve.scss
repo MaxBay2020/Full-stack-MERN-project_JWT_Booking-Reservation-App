@@ -1,0 +1,81 @@
+@import '../../style/imports';
+
+.reserve{
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.418);
+    position: fixed;
+    top: 0;
+    left: 0;
+    @include flexBox(row);
+
+    .rContainer{
+        background: #fff;
+        padding: 20px;
+        min-width: 500px;
+        position: relative;
+
+        .rCLose{
+            cursor:pointer;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+
+        }
+
+        .rItem{
+            @include flexBox(row);
+            justify-content: space-between;
+            gap: 50px;
+            padding: 20px;
+
+            .rItemInfo{
+                @include flexBox(column);
+                align-items: flex-start;
+                gap: 5px;
+
+                .rTitle{
+                    font-weight: 500;
+                }
+
+                .rDesc{
+                    font-weight: 300;
+                }
+
+                .rMax{
+                    font-size: 12px;
+                }
+
+                .rPrice{
+                    font-weight: 500;
+                }
+            }
+
+            .rSelectRooms{
+                @include flexBox(row);
+                flex-wrap: wrap;
+                gap: 5px;
+                font-size: 12px;
+                color: gray;
+
+                .room{
+                    @include flexBox(column);
+                }
+            }
+        }
+
+
+
+        .rButton {
+            border: none;
+            padding: 10px 20px;
+            background-color: $color-blue;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    }
+}

@@ -6,15 +6,26 @@ import {useState} from "react";
 import {format} from "date-fns";
 import DateRange from "react-date-range/dist/components/DateRange";
 import SearchItem from "../../components/searchItem/SearchItem";
+import useFetch from "../../hooks/useFetch";
 
 const List = () => {
     const location = useLocation()
 
     const [destination, setDestination] = useState(location.state.destination);
-    const [date, setDate] = useState(location.state.date);
+    const [dates, setDates] = useState(location.state.dates);
     const [options, setOptions] = useState(location.state.options);
 
     const [openDate, setOpenDate] = useState(false);
+
+    const [min, setMin] = useState(undefined)
+    const [max, setMax] = useState(undefined)
+
+    const { data, loading, error, fetchData } = useFetch(`hotels?city=${destination.toLowerCase()}&min=${min || 0}&max=${max || 99999}`)
+
+
+    const handleClick = () => {
+        fetchData()
+    }
 
     return (
         <main>
@@ -34,7 +45,7 @@ const List = () => {
                        <article className="lsItem">
                            <label>Check-in Date</label>
                            <span onClick={()=>setOpenDate(prev=>!prev)}>
-                               {`${format(date[0].startDate, 'MM/dd/yyyy')} to ${format(date[0].endDate, 'MM/dd/yyyy')}`}
+                               {`${format(dates[0].startDate, 'MM/dd/yyyy')} to ${format(dates[0].endDate, 'MM/dd/yyyy')}`}
                            </span>
 
                            {
@@ -42,9 +53,9 @@ const List = () => {
                                <DateRange
                                    minDate={new Date()}
                                    editableDateInputs={true}
-                                   onChange={item => setDate([item.selection])}
+                                   onChange={item => setDates([item.selection])}
                                    moveRangeOnFirstSelection={false}
-                                   ranges={date}
+                                   ranges={dates}
                                />
                            }
                        </article>
@@ -55,12 +66,20 @@ const List = () => {
                            <div className="lsOptions">
                                <article className="lsOptionItem">
                                    <span className="lsOptionText">Min price <small>per night</small></span>
-                                   <input type="text" className='lsOptionInput'/>
+                                   <input
+                                       type="text"
+                                       className='lsOptionInput'
+                                       onChange={(e) => setMin(e.target.value)}
+                                   />
                                </article>
 
                                <article className="lsOptionItem">
                                    <span className="lsOptionText">Max price <small>per night</small></span>
-                                   <input type="text" className='lsOptionInput'/>
+                                   <input
+                                       type="text"
+                                       className='lsOptionInput'
+                                       onChange={(e) => setMax(e.target.value)}
+                                   />
                                </article>
 
                                <article className="lsOptionItem">
@@ -80,16 +99,23 @@ const List = () => {
                            </div>
 
                        </article>
-                       <button>Search</button>
+                       <button onClick={()=>handleClick()}>Search</button>
 
 
                    </section>
 
                    <section className="listResult">
                        {
-                           new Array(8).fill(0).map((item, index) => (
-                               <SearchItem key={index} />
-                           ))
+                           loading?
+                               <p>Loading...</p>
+                               :
+                               <>
+                                   {
+                                       data?.map((item) => (
+                                           <SearchItem item={item} key={item._id} />
+                                       ))
+                                   }
+                               </>
                        }
                    </section>
                </div>

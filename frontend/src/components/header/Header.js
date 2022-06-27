@@ -13,12 +13,14 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import {format} from 'date-fns'
 import {useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import {newSearch} from "../../redux/features/search";
 
 const Header = ({type}) => {
     const [destination, setDestination] = useState('');
 
     const [openDate, setOpenDate] = useState(false);
-    const [date, setDate] = useState([
+    const [dates, setDates] = useState([
         {
             startDate: new Date(),
             endDate: new Date(),
@@ -32,6 +34,10 @@ const Header = ({type}) => {
         children: 0,
         room: 1
     });
+
+    const dispatch = useDispatch()
+
+    const { user } = useSelector(state => state.auth.value)
 
     const handleOption = (optionName, operator) => {
         switch (operator){
@@ -59,10 +65,16 @@ const Header = ({type}) => {
         navigate('/hotels', {
             state: {
                 destination,
-                date,
+                dates,
                 options
             }
         })
+
+        dispatch(newSearch({
+            city: destination,
+            dates,
+            options
+        }))
     }
 
 
@@ -105,7 +117,7 @@ const Header = ({type}) => {
                             more with a free Maxbooking account
                         </p>
 
-                        <button className="headerBtn">Sign in / Register</button>
+                        {!user && <button className="headerBtn">Sign in / Register</button>}
 
 
                         <div className="headerSearch">
@@ -126,7 +138,7 @@ const Header = ({type}) => {
                                     className='headerSearchText'
                                     onClick={() => setOpenDate(prev => !prev)}
                                 >
-                            {`${format(date[0].startDate, 'MM/dd/yyyy')} to ${format(date[0].endDate, 'MM/dd/yyyy')}`}
+                            {`${format(dates[0].startDate, 'MM/dd/yyyy')} to ${format(dates[0].endDate, 'MM/dd/yyyy')}`}
                         </span>
                                 {
                                     openDate
@@ -135,9 +147,9 @@ const Header = ({type}) => {
                                         className='date'
                                         minDate={new Date()}
                                         editableDateInputs={true}
-                                        onChange={item => setDate([item.selection])}
+                                        onChange={item => setDates([item.selection])}
                                         moveRangeOnFirstSelection={false}
-                                        ranges={date}
+                                        ranges={dates}
                                     />
                                 }
                             </article>
